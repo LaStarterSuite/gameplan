@@ -1,0 +1,25 @@
+# LaStarterSuite standard Mergify workflow (mirrors frappe org conventions).
+# Re-applied automatically after upstream syncs by the LaStarter 2h task.
+pull_request_rules:
+  - name: label PRs targeting develop with backport-master
+    conditions:
+      - base=develop
+    actions:
+      label:
+        add:
+          - backport-master
+  - name: queue green pull requests on develop
+    conditions:
+      - base=develop
+      - -draft
+      - -label~=(wip|do-not-merge)
+      - check-success=Mergify Merge Protections
+    actions:
+      queue:
+        name: default
+queue_rules:
+  - name: default
+    conditions:
+      - base=develop
+      - -draft
+      - -label~=(wip|do-not-merge)
